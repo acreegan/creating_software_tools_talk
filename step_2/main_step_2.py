@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate, signal
 import json
-from PyQt5.QtWidgets import QApplication, QFileDialog
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 
 # Define settings
 config_filename = "conf.json"
@@ -10,9 +11,9 @@ with open(config_filename, "r") as file:
     conf = json.load(file)
 
 # # Select data file
-app = QApplication([])
-data_filename = QFileDialog().getOpenFileName(caption="Select data file")[0]
-app.quit()
+Tk().withdraw()
+data_filename = askopenfilename(title="Select data file")
+Tk().destroy()
 
 # Read data
 flow = np.genfromtxt(data_filename)

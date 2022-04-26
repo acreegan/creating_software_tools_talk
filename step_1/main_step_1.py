@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import integrate, signal
 
 # Define settings
-data_filename = "data.csv"
+data_filename = "../data.csv"
 filter_window_length = 20
 filter_order = 2
 dx = 0.01
