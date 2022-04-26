@@ -14,7 +14,7 @@ flow = np.genfromtxt(data_filename)
 
 # Calculate volume
 flow_filtered = signal.savgol_filter(flow, filter_window_length, filter_order)
-volume = integrate.cumtrapz(flow_filtered, dx=dx, initial=initial)
+volume = integrate.cumulative_trapezoid(flow_filtered, dx=dx, initial=initial)
 
 # Plot results
 plt.plot(flow, label="Flow")

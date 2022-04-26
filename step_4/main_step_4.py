@@ -36,7 +36,7 @@ def calculate_volume(flow, dx, initial, filter_window_length=None, filter_order=
         flow_filtered = signal.savgol_filter(flow, filter_window_length, filter_order)
     else:
         flow_filtered = flow
-    volume = integrate.cumtrapz(flow_filtered, dx=dx, initial=initial)
+    volume = integrate.cumulative_trapezoid(flow_filtered, dx=dx, initial=initial)
     return volume
 
 
