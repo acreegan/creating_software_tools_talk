@@ -15,7 +15,7 @@ def main():
     signal = create_sample_data(amplitude, frequency, offset, noise_amplitude,
                                 signal_duration, prefix_duration, sample_freq)
 
-    np.savetxt(output_filename, signal, delimiter=",", header="Time, Data", comments="")
+    np.savetxt(output_filename, signal[:, 1], header="Data")
 
     plt.plot(signal[:, 0], signal[:, 1])
     plt.show()

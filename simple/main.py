@@ -6,7 +6,7 @@ import scipy.signal
 
 def main():
     # Set config
-    data_filename = "data.csv"
+    data_filename = "../data.csv"
     dx = 0.01
     filt_window_length = 20
     filt_polyorder = 2
