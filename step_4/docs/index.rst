@@ -6,7 +6,8 @@
 Welcome to Volume Calculator's documentation!
 =============================================
 Volume Calculator is a tool used to calculate volume from measured flow data. It prompts the user to select
-a data file, then plots a graph of input flow data along with calculated volume.
+a data file, then plots a graph of input flow data along with calculated volume. Volume calculator was created
+as an example application to demonstrate how to create a software tool from a simple script.
 
 Features
 ========

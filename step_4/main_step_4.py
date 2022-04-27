@@ -8,7 +8,7 @@ from tkinter.filedialog import askopenfilename
 
 def main():
     # Define settings
-    config_filename = "./conf.json"
+    config_filename = "conf.json"
     with open(config_filename, "r") as file:
         conf = json.load(file)
 
