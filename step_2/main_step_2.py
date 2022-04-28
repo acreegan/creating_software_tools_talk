@@ -12,7 +12,7 @@ with open(config_filename, "r") as file:
 
 # # Select data file
 Tk().withdraw()
-data_filename = askopenfilename(title="Select data file")
+data_filename = askopenfilename(title="Select data file", initialdir=".")
 Tk().destroy()
 
 # Read data
