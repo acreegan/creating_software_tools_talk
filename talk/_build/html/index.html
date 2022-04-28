@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Creating Software Tools &#8212; creating_software_tools  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="creating-software-tools">
+<h1>Creating Software Tools<a class="headerlink" href="#creating-software-tools" title="Permalink to this headline">¶</a></h1>
+<p>One software development practice that I would like to encourage, particularly in researchers, is the
+creation of software <em>tools</em>, not just <em>scripts</em>. In my experience, this is something that researchers
+need special encouragement to do because their work may not be as team focused as, for example, work in
+industry, and researchers may not have programming as their primary expertise. Nonetheless, I think
+researchers have a lot to gain from just a few tweaks to their software development practices.</p>
+<p>Before we get in too deep, let me explain what I mean by developing tools as apposed to scripts. I want to focus
+particularly on <em>application</em> software, i.e. software that is executed by a user in order to accomplish a certain task.
+I would call an application a <em>tool</em> if it is designed to be reusable. That is, it can be used to solve any iteration
+of the particular task it is designed for. A <em>script</em> on the other hand may be a single file program that is hard-coded
+to solve the developer’s specific use case. It may have hard-coded parameters, operate on implicit assumptions about
+the input data, and have a specific rigid operation flow. There is obviously considerable work required in elevating
+an application from a script to a tool, but I hope to explain how significant steps can be made down this path with just
+a little effort.</p>
+<p>Let’s first look at a few reasons why it might be worthwhile doing the work to convert your script into a fully fledged
+software tool. The most obvious reason to me is to increase the impact of the work you’ve already done. When you write
+a script, you devote time and effort into solving a problem. Making that code reusable means more overall benefit can
+be derived from that precious time and effort. It also means that those who use it can spend their time on accomplishing
+more, rather than continuously reinventing the wheel. Among many other benefits you will find that spending time working
+to improve your code in this way will help demonstrate the significance of the problem it solves, and will greatly
+assist in maintaining <em>data provenance</em> when doing complex research.</p>
+<p>Without further ado, let’s dive into how to actually go about converting a software script into a reusable tool. In
+this article we’ll be covering four main areas where with minimal effort you can go a long way to improving the
+reusability of your code. These areas are:</p>
+<ul class="simple">
+<li><p>Sharing</p></li>
+<li><p>Configuration</p></li>
+<li><p>Testing</p></li>
+<li><p>Documentation</p></li>
+</ul>
+<p>Note that while in this article we will provide examples using the Python programming language and some specific tools
+for sharing and documentation, the overall concepts are not language specific and apply broadly to any language or
+environment.</p>
+<section id="sharing">
+<h2>Sharing<a class="headerlink" href="#sharing" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps the most obvious requirement for making your code useful to others is sharing it! After all, no one can use
+your code if they don’t know about it. It may be less obvious why this is the first topic to be discussed, since it
+may seem intuitive that you should share your application after you are finished developing it. However, I have put this
+topic first for a reason.</p>
+<p>First of all, I would like to encourage everyone to share their projects early. With a lot of
+people, there is an understandable tendency to want to get things just right before letting them out into the world.
+But it might take a long time for your project to get to that stage, if it ever does! If you share your work in
+progress, on the other hand, some parts of it may be useful to others, or they may even contribute.</p>
+<p>The second reason why sharing code should be the first step in the development process is to do with the tools that we
+use to do so. The Git revision control software is one of the most useful and widely used tools available for managing
+code in development. This, coupled with the Github hosting service (don’t conflate Git with Github), makes the perfect
+system for managing your project as you continue to develop it, and releasing updates in a controlled manner. We don’t
+have room in this article for a complete introduction to Git and Github, but my recommendation is to place all or your
+software projects under Git revision control, and host them on Github (or similar services) for both sharing and
+backup purposes.</p>
+<figure>
+    <object data="_static/git_workflow.svg"> </object>
+    <figcaption><a href="https://www.atlassian.com/git/tutorials/comparing-workflows">www.atlassian.com/git/tutorials/comparing-workflows</a></figcaption>
+</figure></section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Keep your configuration separate from your code. This is the key lesson to take away when it comes to writing the code
+for a reusable application. To explain what this means, let us consider the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span><span class="p">,</span> <span class="n">signal</span>
+
+<span class="c1"># Read data</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate volume</span>
+<span class="n">flow_filtered</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">flow_filtered</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Plot results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Flow&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The above code snippet shows a very simple python script that takes in data from a file, processes it, and plots it
+to screen. But the actual function of the code is not important. What I’d like to draw your attention to is that the
+code uses several parameters as input to the functions, and relies on the presence of a specific external file. Taken
+together, these elements can be thought of as the program’s <em>configuration</em>. If this code were to be used for anything
+other than the specific case it is set up for, some or all of these variables would need to change. You can imagine that
+as the script grew bigger and more complicated, it would become increasingly difficult to quickly locate the parameter
+in need of changing for any given task. So how can we alleviate this difficulty?</p>
+<p>The simplest way would be to create intermediate variables for each of the configuration parameters, and place them
+at the top of the file. That way, whenever anyone needs to change the program’s configuration, they know exactly where
+to make changes to the code. See the amended snippet below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span><span class="p">,</span> <span class="n">signal</span>
+
+<span class="c1"># Define settings</span>
+<span class="n">data_filename</span> <span class="o">=</span> <span class="s2">&quot;data.csv&quot;</span>
+<span class="n">filter_window_length</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">filter_order</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">initial</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Read data</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_filename</span><span class="p">)</span>
+
+<span class="c1"># Calculate volume</span>
+<span class="n">flow_filtered</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">filter_window_length</span><span class="p">,</span> <span class="n">filter_order</span><span class="p">)</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">flow_filtered</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+
+<span class="c1"># Plot results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Flow&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This code is significantly improved already, and much easier to configure. This way of coding is considered best
+practice and I recommend using this technique as a bare minimum for any project. But, as a project grows, especially
+if more than one person is using the application, there are more advanced techniques you can apply.</p>
+<p>As a software project grows, it can become useful to fully separate the configuration from the code. Consider the
+updated script below:</p>
+<p>main.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span><span class="p">,</span> <span class="n">signal</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Tk</span>
+<span class="kn">from</span> <span class="nn">tkinter.filedialog</span> <span class="kn">import</span> <span class="n">askopenfilename</span>
+
+<span class="c1"># Define settings</span>
+<span class="n">config_filename</span> <span class="o">=</span> <span class="s2">&quot;conf.json&quot;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="c1"># # Select data file</span>
+<span class="n">Tk</span><span class="p">()</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+<span class="n">data_filename</span> <span class="o">=</span> <span class="n">askopenfilename</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Select data file&quot;</span><span class="p">,</span> <span class="n">initialdir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="n">Tk</span><span class="p">()</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+<span class="c1"># Read data</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_filename</span><span class="p">)</span>
+
+<span class="c1"># Calculate volume</span>
+<span class="n">flow_filtered</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">savgol_filter</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;filter_window_length&quot;</span><span class="p">],</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;filter_order&quot;</span><span class="p">])</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumtrapz</span><span class="p">(</span><span class="n">flow_filtered</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s2">&quot;dx&quot;</span><span class="p">],</span> <span class="n">initial</span><span class="o">=</span><span class="n">conf</span><span class="p">[</span><span class="s2">&quot;initial&quot;</span><span class="p">])</span>
+
+<span class="c1"># Plot results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Flow&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">volume</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Volume&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>conf.json:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;filter_window_length&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;filter_order&quot;</span><span class="p">:</span><span class="w">   </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;dx&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.01</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;initial&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The above code has a few interesting improvements. First, the configuration parameters have been placed in an entirely
+separate file from the code. This is particularly useful in situations where multiple people are using a piece of code,
+all with different parameter requirements. They may still, however desire to continuously receive updates to the code
+as the project progresses and new features are added. If their parameter changes are made in a separate file, it is much
+easier for them to pull in updates to the code without manually resetting their configurations each time.</p>
+<p>A second very useful improvement that has been made to the above code is how it is given a data file. The hard coded
+filename has been replaced with a function that brings up a file select dialog for the user, making it much easier for
+them to quickly specify which file to operate on. This type of simple yet powerful updates can greatly improve the
+usability of an application.</p>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Unit tests are a crucial, yet often overlooked, part of software development. This is especially true for software that
+will be developed by multiple people. The overall purpose of software tests is to define how a program can be expected
+to behave. Tests can be set up to run automatically before any change is accepted, and if any change causes a section
+of code to behave differently than previously defined, the tests will fail. This gives the developers a chance to
+fix the code before any errors are encountered by the users.</p>
+<p>Unit tests are very easy to write in Python. As an example, consider the code below.</p>
+<p>In main.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_volume</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">initial</span><span class="p">):</span>
+   <span class="n">volume</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">cumulative_trapezoid</span><span class="p">(</span><span class="n">flow_filtered</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">volume</span>
+</pre></div>
+</div>
+<p>In test_main.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_calculate_volume</span><span class="p">():</span>
+    <span class="n">sample_frequency</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">duration</span><span class="o">*</span><span class="n">sample_frequency</span><span class="p">))</span>
+    <span class="n">flow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+
+    <span class="c1"># Integral from zero to pi of sin(x) dx is 2.</span>
+    <span class="n">correct_max_volume</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">volume</span> <span class="o">=</span> <span class="n">calculate_volume</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">sample_frequency</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">max_volume</span> <span class="o">=</span> <span class="n">volume</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">volume</span><span class="p">)]</span>
+
+    <span class="c1"># Check to two decimal places</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">correct_max_volume</span><span class="p">,</span> <span class="n">max_volume</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The example from the previous section has been broken into functions, and we are interested in ensuring that the
+calculate_volume function has the desired behaviour. In Python, the way to create a test for this is to simply create
+a new function called test_calculate_volume() (as we will see later, it is important that the function name starts with
+the word “test”). From basic trigonometry, we know that the area under a sine function between zero and pi is equal to
+2. Therefore, we create input data representing this condition and feed it into our function under test. We then compare
+the output to our known correct output using the assert statement.</p>
+<p>In order to make use of our new test function, we need to use a Python module called <em>pytest</em>. When pytest is installed
+it can be run as a command line utility, and it automatically searches a project for functions with names begining with
+“test”. pytest runs these functions and if the assert passes, the tests are considered to have passed, while if the
+assert fails, the tests are considered to have failed. In our example, we can see that if the calculate_volume function
+were to be accidentally modified to return results incompatible with our known mathematically correct result, the test
+would fail, alerting us to the situation.</p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Documentation is one of the most important aspects of making reusable software, because if it’s not documented, only the developer will know how to use it!</p></li>
+<li><p>For an application, three main topics to include in documentation are:</p></li>
+</ul>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>What is your project</p></li>
+<li><p>How to use it</p></li>
+<li><p>Examples!</p></li>
+</ol>
+</div></blockquote>
+<ul class="simple">
+<li><p>You can use Sphinx to build docs for python projects that can be hosted on the web. (For example, on readthedocs, or github pages)</p></li>
+<li><p>You can also make one page viewable on you github repo, which makes it easy to find for users</p></li>
+</ul>
+<img alt="_images/Volume_calculator_docs_snip.PNG" src="_images/Volume_calculator_docs_snip.PNG" />
+</section>
+<section id="to-sum-up">
+<h2>To Sum Up<a class="headerlink" href="#to-sum-up" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>What we missed</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>Packaging</p></li>
+<li><p>Code level documentation</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>Further learning</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>Lot’s more tips, e.g. writing output, more complex config management</p></li>
+<li><p>GUIs</p></li>
+<li><p>Etc…</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>I hope this has showed that you can make your code much more useful with some relatively simple steps</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">creating_software_tools</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Andrew Creegan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
