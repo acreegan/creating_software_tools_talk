@@ -57,14 +57,9 @@ have room in this article for a complete introduction to Git and Github, but my 
 software projects under Git revision control, and host them on Github (or similar services) for both sharing and
 backup purposes.
 
+.. figure:: _static/git_workflow.svg
 
-.. raw:: html
-
-    <figure>
-        <object data="_static/git_workflow.svg"> </object>
-        <figcaption><a href="https://www.atlassian.com/git/tutorials/comparing-workflows">www.atlassian.com/git/tutorials/comparing-workflows</a></figcaption>
-    </figure>
-
+    `Image: Git Centralized Workflow <https://www.atlassian.com/git/tutorials/comparing-workflows>`_
 
 
 Configuration
@@ -245,40 +240,82 @@ would fail, alerting us to the situation.
 
 Documentation
 -------------
--	Documentation is one of the most important aspects of making reusable software, because if it's not documented, only the developer will know how to use it!
--	For an application, three main topics to include in documentation are:
+Documentation may be the most important of the four topics we've discussed so far. Without documentation of some form,
+it's highly unlikely that a piece of software will be useful to anyone except the developer. This means that, in terms
+of increasing the impact of your work, writing a little documentation is often far more efficient than time spent
+developing new features. In terms of content, there are a few main topics I suggest you include in the documentation
+for a software application:
 
-    1. What is your project
-    2. How to use it
-    3. Examples!
+**1. What it is:**
 
--	You can use Sphinx to build docs for python projects that can be hosted on the web. (For example, on readthedocs, or github pages)
--	You can also make one page viewable on you github repo, which makes it easy to find for users
+The start of any good documentation should be a high level introduction detailing things like the project's purpose,
+it's structure, motivations for creating it, and any broader context needed to understand the ecosystem in which the
+project is intended to be used. This often requires the developer to mentally take a step back from the project and
+imagine the mindset of a new user with no prior knowledge.
 
-.. image:: _static/Volume_calculator_docs_snip.PNG
+**2. Features:**
 
+It's a good idea to list features up front, to give a prospective user a better idea of the specific capabilities of
+a piece of software.
 
+**3. User Guide:**
+
+Any features that you wish others to be able to use should be documented with instructions in the user guide. Ideally
+these will contain screenshots of the program in use.
+
+As an example, see below a snippet of some documentation for the code we looked at previously.
+
+.. image:: _static/volume_calculator_no_sidebar.png
+    :class: with-border
+
+The usage section goes on to describe the required format for the input data file, and the
+function of each of the configuration parameters. `See the full document here.
+<https://github.com/acreegan/creating_software_tools_talk/tree/main/step_4/docs>`_
+
+One final subject to discuss is how to publish documentation so it is accessible to users of your application. For
+Python, there is a commonly used tool called Sphinx which allows you to easily build web ready documentation from
+simple text files, and this documentation can then be hosted on free services such as readthedocs or github pages.
+The documentation above is an example of a Sphinx project, and you can see more detailed documentation build with Sphinx
+below in the :ref:`Further Reading` section
 
 
 To Sum Up
 ---------
--	What we missed
+Before we finish I want to acknowledge a couple of important topics that there wasn't room for in this article
+to discuss:
 
-    - Packaging
-    - Code level documentation
+**Packaging**
 
--	Further learning
+Packaging in Python is the process of setting up a system which makes it easy for others to install your code
+and use it as a distinct unit. Python packages can range from simple to complex, but is very useful. I
+encourage you to learn more about it.
 
-    - Lot's more tips, e.g. writing output, more complex config management
-    - GUIs
-    - Etc...
+**Code level documentation**
 
--	I hope this has showed that you can make your code much more useful with some relatively simple steps
+While we discussed project level documentation in this article, code level documentation (i.e. documentation
+of each function and code element, written inside the python file) is a key element to documentation, though
+it is more important to developers than to users.
 
+In any case, I hope that his article has showed that you can make your code much more useful with some
+relatively simple steps. I wish you all good luck in writing more useful, more impactful software.
+
+Further Reading
+---------------
+
+- Source code for this article and examples: `<https://github.com/acreegan/creating_software_tools_talk>`_
+
+- Real project demonstrating these concepts in use: `<https://abi-eit.github.io/tetrahedralizer>`_
+
+- More resources for research software development: `<https://github.com/Research-software-development-resources>`_
+
+- Git tutorials from Atlassian: `<https://www.atlassian.com/git/tutorials>`_
+
+- Sphinx homepage: `<https://www.sphinx-doc.org/>`_
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+
+   self
 
 
 

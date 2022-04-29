@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'creating_software_tools'
+project = 'Creating Software Tools'
 copyright = '2022, Andrew Creegan'
 author = 'Andrew Creegan'
 
@@ -27,8 +27,7 @@ author = 'Andrew Creegan'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['sphinx.ext.autosectionlabel']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -45,6 +44,14 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'alabaster'
+
+html_theme_options = {
+    "fixed_sidebar": True
+}
+
+html_sidebars = {
+   '**': ['about.html', 'custom_sidebar.html', 'searchbox.html'],
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

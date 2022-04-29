@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Creating Software Tools &#8212; creating_software_tools  documentation</title>
+    <title>Creating Software Tools &#8212; Creating Software Tools  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
@@ -23,9 +23,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Creating Software Tools</a></h1>
 
-    <div class="document">
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+  <div>
+    <ul>
+<li><a class="reference internal" href="#">Creating Software Tools</a><ul>
+<li><a class="reference internal" href="#sharing">Sharing</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#to-sum-up">To Sum Up</a></li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -83,10 +121,12 @@ system for managing your project as you continue to develop it, and releasing up
 have room in this article for a complete introduction to Git and Github, but my recommendation is to place all or your
 software projects under Git revision control, and host them on Github (or similar services) for both sharing and
 backup purposes.</p>
-<figure>
-    <object data="_static/git_workflow.svg"> </object>
-    <figcaption><a href="https://www.atlassian.com/git/tutorials/comparing-workflows">www.atlassian.com/git/tutorials/comparing-workflows</a></figcaption>
-</figure></section>
+<figure class="align-default" id="id1">
+<img alt="_images/git_workflow.svg" src="_images/git_workflow.svg" /><figcaption>
+<p><span class="caption-text"><a class="reference external" href="https://www.atlassian.com/git/tutorials/comparing-workflows">Image: Git Centralized Workflow</a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Keep your configuration separate from your code. This is the key lesson to take away when it comes to writing the code
@@ -246,46 +286,55 @@ would fail, alerting us to the situation.</p>
 </section>
 <section id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Documentation is one of the most important aspects of making reusable software, because if it’s not documented, only the developer will know how to use it!</p></li>
-<li><p>For an application, three main topics to include in documentation are:</p></li>
-</ul>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>What is your project</p></li>
-<li><p>How to use it</p></li>
-<li><p>Examples!</p></li>
-</ol>
-</div></blockquote>
-<ul class="simple">
-<li><p>You can use Sphinx to build docs for python projects that can be hosted on the web. (For example, on readthedocs, or github pages)</p></li>
-<li><p>You can also make one page viewable on you github repo, which makes it easy to find for users</p></li>
-</ul>
-<img alt="_images/Volume_calculator_docs_snip.PNG" src="_images/Volume_calculator_docs_snip.PNG" />
+<p>Documentation may be the most important of the four topics we’ve discussed so far. Without documentation of some form,
+it’s highly unlikely that a piece of software will be useful to anyone except the developer. This means that, in terms
+of increasing the impact of your work, writing a little documentation is often far more efficient than time spent
+developing new features. In terms of content, there are a few main topics I suggest you include in the documentation
+for a software application:</p>
+<p><strong>1. What it is:</strong></p>
+<p>The start of any good documentation should be a high level introduction detailing things like the project’s purpose,
+it’s structure, motivations for creating it, and any broader context needed to understand the ecosystem in which the
+project is intended to be used. This often requires the developer to mentally take a step back from the project and
+imagine the mindset of a new user with no prior knowledge.</p>
+<p><strong>2. Features:</strong></p>
+<p>It’s a good idea to list features up front, to give a prospective user a better idea of the specific capabilities of
+a piece of software.</p>
+<p><strong>3. User Guide:</strong></p>
+<p>Any features that you wish others to be able to use should be documented with instructions in the user guide. Ideally
+these will contain screenshots of the program in use.</p>
+<p>As an example, see below a snippet of some documentation for the code we looked at previously.</p>
+<img alt="_images/volume_calculator_no_sidebar.png" class="with-border" src="_images/volume_calculator_no_sidebar.png" />
+<p>The usage section goes on to describe the required format for the input data file, and the
+function of each of the configuration parameters. <a class="reference external" href="https://github.com/acreegan/creating_software_tools_talk/tree/main/step_4/docs">See the full document here.</a></p>
+<p>One final subject to discuss is how to publish documentation so it is accessible to users of your application. For
+Python, there is a commonly used tool called Sphinx which allows you to easily build web ready documentation from
+simple text files, and this documentation can then be hosted on free services such as readthedocs or github pages.
+The documentation above is an example of a Sphinx project, and you can see more detailed documentation build with Sphinx
+below in the <a class="reference internal" href="#further-reading"><span class="std std-ref">Further Reading</span></a> section</p>
 </section>
 <section id="to-sum-up">
 <h2>To Sum Up<a class="headerlink" href="#to-sum-up" title="Permalink to this headline">¶</a></h2>
+<p>Before we finish I want to acknowledge a couple of important topics that there wasn’t room for in this article
+to discuss:</p>
+<p><strong>Packaging</strong></p>
+<p>Packaging in Python is the process of setting up a system which makes it easy for others to install your code
+and use it as a distinct unit. Python packages can range from simple to complex, but is very useful. I
+encourage you to learn more about it.</p>
+<p><strong>Code level documentation</strong></p>
+<p>While we discussed project level documentation in this article, code level documentation (i.e. documentation
+of each function and code element, written inside the python file) is a key element to documentation, though
+it is more important to developers than to users.</p>
+<p>In any case, I hope that his article has showed that you can make your code much more useful with some
+relatively simple steps. I wish you all good luck in writing more useful, more impactful software.</p>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>What we missed</p></li>
-</ul>
-<blockquote>
-<div><ul class="simple">
-<li><p>Packaging</p></li>
-<li><p>Code level documentation</p></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li><p>Further learning</p></li>
-</ul>
-<blockquote>
-<div><ul class="simple">
-<li><p>Lot’s more tips, e.g. writing output, more complex config management</p></li>
-<li><p>GUIs</p></li>
-<li><p>Etc…</p></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li><p>I hope this has showed that you can make your code much more useful with some relatively simple steps</p></li>
+<li><p>Source code for this article and examples: <a class="reference external" href="https://github.com/acreegan/creating_software_tools_talk">https://github.com/acreegan/creating_software_tools_talk</a></p></li>
+<li><p>Real project demonstrating these concepts in use: <a class="reference external" href="https://abi-eit.github.io/tetrahedralizer">https://abi-eit.github.io/tetrahedralizer</a></p></li>
+<li><p>More resources for research software development: <a class="reference external" href="https://github.com/Research-software-development-resources">https://github.com/Research-software-development-resources</a></p></li>
+<li><p>Git tutorials from Atlassian: <a class="reference external" href="https://www.atlassian.com/git/tutorials">https://www.atlassian.com/git/tutorials</a></p></li>
+<li><p>Sphinx homepage: <a class="reference external" href="https://www.sphinx-doc.org/">https://www.sphinx-doc.org/</a></p></li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -297,48 +346,8 @@ would fail, alerting us to the situation.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">creating_software_tools</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &copy;2022, Andrew Creegan.
       
